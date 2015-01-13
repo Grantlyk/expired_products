@@ -19,18 +19,31 @@ i = 0
 c = 0
 count = 0
 d = 0
+f = 0
 
+puts data_feed_download_url.length
+puts data_feed_download_url
 
 while count < data_feed_download_url.length do
   products << data_feed_download_url[count]["store_name"]
   count +=1
 end
 
+# puts products
+
+# while d < data_feed_download_url.length do
+#   `curl -o ~/SearchTheSales/scripts/expired_products/#{products[d]}2.csv.zip #{data_feed_download_url[d]["feed_url"]}`
+#   d +=1
+# end
+
 while d < data_feed_download_url.length do
-  `curl -o ~/SearchTheSales/scripts/expired_products/#{products[d]}2.csv.zip #{data_feed_download_url[d]["feed_url"]}`
+  open("#{products[d]}2.csv.zip", "wb") do |file|
+    open("#{data_feed_download_url[d]["feed_url"]}") do |uri|
+       file.write(uri.read)
+    end
+  end
   d +=1
 end
-
 
 
 puts "Importing & Comparing files - Please wait..."
@@ -70,7 +83,11 @@ end
 puts expired_products
 puts expired_products.length
 puts "Job Complete"
-#Net::HTTP.new('http://localhost').delete('/path')
+
+while f < expired_products.length do
+  Net::HTTP.new('http://localhost:3000').delete('/#{expired_products[f]}')
+  f +=1
+end
 
 
 
