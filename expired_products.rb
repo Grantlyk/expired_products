@@ -96,7 +96,7 @@ expired_products.each_key do |key|
   # puts response
 
   options = { query: {url: expired_products[key][0]} }
-  res = HTTParty.delete("http://localhost:3000/destroy_url_path/", options)
+  HTTParty.delete("http://shopshopgo.com/destroy_by_url/", options)
 end
 
 puts "Job Complete"
