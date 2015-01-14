@@ -6,6 +6,7 @@ require 'uri'
 require 'zip'
 require 'open-uri'
 require 'json'
+require 'httparty'
 
 puts "starting..."
 
@@ -74,23 +75,28 @@ while c < products.length do
   c +=1
 end
 
-puts expired_products.length + " Products to be removed"
+puts expired_products.length.to_s + " Products to be removed"
 
 
 expired_products.each_key do |key|
 
-  uri = URI.parse("http://localhost:3000")
-  http = Net::HTTP.new(uri.host, uri.port)
-  puts expired_products[key]
+  # uri = URI.parse("http://localhost:3000")
+  # http = Net::HTTP.new(uri.host, uri.port)
+  # puts expired_products[key]
 
-  r = "http://localhost:3000/" + expired_products[key][0]
-  puts r
+  # r = "http://localhost:3000/" + expired_products[key][0]
+  # puts r
 
-  request = Net::HTTP::Delete.new(r)
-  puts request
-  http.use_ssl = false
-  response = http.request(request)
-  puts response
+  # request = Net::HTTP::Delete.new(r)
+  # request.body = multipart_data
+  # request.content_type = 'multipart/form-data'
+  # puts request
+  # http.use_ssl = false
+  # response = http.request(request)
+  # puts response
+
+  options = { query: {url: expired_products[key][0]} }
+  res = HTTParty.delete("http://localhost:3000/destroy_url_path/", options)
 end
 
 puts "Job Complete"
